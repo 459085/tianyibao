@@ -8,3 +8,9 @@ spring:
     password:
 mybatis:
   mapper-locations: classpath:com/ctsi/*/mapper/*.xml
+#  configuration:
+#     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+weixin:
+  xiaochengxu:
+    appid: wx7c6260e5101f7ef3
+    secret: 12d17e4fc08d3219625a01209e9f5265

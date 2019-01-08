@@ -10,4 +10,80 @@
          and
           is_del = 0
     </select>
+
+    <select id="getSysConfig" resultType="map">
+        select * from
+          lr_sys_config
+    </select>
+
+    <select id="getShopType" resultType="map">
+        select * from
+          lr_shop_type_image
+          where
+          is_online = 1
+         and
+          is_del = 0
+    </select>
+
+    <select id="getUnShopType" resultType="map">
+        select * from
+          lr_shop_type_image
+          where
+          is_online = 0
+         and
+          is_del = 0
+    </select>
+
+    <select id="getShopList" resultType="map" parameterType="string">
+        <![CDATA[
+        select id,name,description,distance,order_lead_time,float_minimum_order_amount,float_delivery_fee,
+        image_path,is_valid,promotion_info,delivery,shop_latitude as latitude,shop_longitude as longitude,
+        address,shop_type,phone,opening_start_time,opening_end_time,max_delivery_distance,pay_type,type,sort,
+        promotion,ze1,je1,ze2,je2,ze3,je3 from lr_shop
+          where
+        is_valid>0 and is_del=0 AND operate_status=1 and (opening_start_time = opening_end_time or
+        (opening_start_time < #{now} and opening_end_time> #{now} and opening_start_time < opening_end_time) or (opening_end_time < opening_start_time AND (opening_start_time < #{now}or opening_end_time > #{now})))
+            and abs(shop_latitude - #{latitude}) <0.2
+            and abs(shop_longitude - #{longitude}) <0.3
+]]>
+        <if test="shop_type!=null">
+            and shop_type = #{shop_type}
+        </if>
+        <if test="type==1">
+            and type in (4,5)
+        </if>
+    </select>
+
+    <select id="get30FinishOrderList" resultType="map">
+        select * from
+          lr_goods_order
+          where
+             (order_status=40 || order_status=50 || order_status=52)
+             and is_del=0 and shop_id= #{id} order by newest_order_time desc LIMIT 30
+    </select>
+
+    <select id="getOrderTimeStampByStatus" resultType="Long">
+        select order_status_uptime from
+          lr_order_state_records
+          where
+             order_id=#{orderId} and order_status=#{orderStatus} and is_del=0
+    </select>
+
+    <select id="getOrderRemarkRating" resultType="Double">
+        <![CDATA[
+        select avg(rating) from
+          lr_goods_order_rating
+          where
+              shop_id=#{shopId} and is_del=0 and add_time < DATE_ADD(#{now},INTERVAL -1 MONTH)
+    ]]>
+    </select>
+
+    <select id="getFinishOrderCount" resultType="Integer">
+        select count(*) from
+          lr_goods_order
+          where shop_id =  #{shopId} and
+          (order_status=20 || order_status=30 || order_status=40 || order_status=50 || order_status=52)
+          and is_del=0 and newest_order_time > #{nowBefore31Day}
+    </select>
+
 </mapper>

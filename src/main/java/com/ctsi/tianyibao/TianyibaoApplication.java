@@ -3,12 +3,17 @@ package com.ctsi.tianyibao;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 
 @SpringBootApplication
 @MapperScan("com.ctsi.tianyibao.*.mapper")
 public class TianyibaoApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TianyibaoApplication.class, args);
+//        ApplicationContext applicationContext =
+                SpringApplication.run(TianyibaoApplication.class, args);
+//        for (String name : applicationContext.getBeanDefinitionNames()) {
+//            System.out.println(name);
+//        }
     }
 }

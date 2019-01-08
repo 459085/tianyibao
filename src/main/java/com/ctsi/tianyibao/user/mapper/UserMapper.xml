@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctsi.tianyibao.user.mapper.UserMapper">
+    <select id="getUserInfo" resultType="map" parameterType="string">
+        select id as user_id,shop_id,qx,qx_detail,gender,nick_name nickName,image_url avatarUrl,country,province,city,language from
+          lr_user
+          where
+          open_id = #{open_id}
+    </select>
+
+    <insert id="insertUser" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into
+          lr_user(open_id,union_id,gender,nick_name,image_url,country,province,city,language,qx,add_time,status)
+        values(#{open_id},#{union_id,},#{gender},#{nickName},#{avatarUrl},#{country},#{province},#{city},#{language},#{qx},#{add_time},#{status})
+    </insert>
+</mapper>
